@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>webApp</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="scripts.js"></script>
+	
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+        <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsqqvSXgfdba5wWPx2YGTJvyWg4UUUsCM&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
+	<style type="text/css">
+
+	.jumbotron{
+		padding-top: 0;
+    	padding-bottom: 20px;
+	}
+
+	.alignCentre {
+		text-align: center;
+	}
+	.nav-pills {
+	    display: flex;
+	    justify-content: center;
+	}
+	.keepCenter {
+	    display: flex;
+	    justify-content: center;
+	}
+
+	.keepRight {
+		float: right;
+	}
+
+	.darkIt {
+		background-color: #666666;
+		color: #ffffff;
+	}
+
+	.topPadding{
+		padding-top: 35px;
+	}
+
+	.styleRev {
+		border-style: solid;
+	    border-width: 0.1px;
+	    border-color: #e6e6e6;
+	    padding: 20px;
+	}
+
+	.bord{
+		margin-top: 40px;
+		border-top: solid;
+		border-width: 1px;
+		border-color: #e6e6e6;
+	}
+
+	.mar {
+		margin: 5px;
+	}
+	.fclass{
+		width: 75%;
+    	margin: 0 auto;
+	}
+	.glyphicon-star {
+		color: #ffcc00;
+	}
+	.row {
+	    display: -ms-flexbox; /* IE 10 */
+	    display: flex;
+	    -ms-flex-wrap: wrap; /* IE 10 */
+	    flex-wrap: wrap;
+	    padding: 0 4px;
+	}
+	.hidden{
+		display: none;
+	}
+	.stripe{
+		background-color: #f9f9f9;
+	}
+
+	/* Create two equal columns that sits next to each other */
+	.column {
+	    -ms-flex: 25%; /* IE 10 */
+	    flex: 25%;
+	    padding: 0 4px;
+	}
+
+	.column img {
+	    margin-top: 8px;
+	    vertical-align: middle;
+	}
+
+	#map {
+        height: 400px;
+        width: 100%;
+    }
+
+    #pano {
+        height: 400px;
+        width: 100%;
+    }
+    
+      #right-panel {
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+
+      #right-panel select, #right-panel input {
+        font-size: 15px;
+      }
+
+      #right-panel select {
+        width: 100%;
+      }
+
+      #right-panel i {
+        font-size: 12px;
+      }
+      #right-panel {
+        height: 100%;
+        overflow: auto;
+      }
+      #map {
+        margin-right: 0px;
+      }
+      @media print {
+        #map {
+          height: 500px;
+          margin: 0;
+        }
+        #right-panel {
+          float: none;
+          width: auto;
+        }
+      }
+	</style>
+</head>
+<body>
+<div class="container">
+	<br>
+	<div class="jumbotron fclass">
+		<div><h3 class="display-4 alignCentre"> Travel and Entertainment Search </h3></div>
+		<div class="container">
+			<div class="form-group row">
+				<div class="col-md-3">Keyword</div>
+				<div class="col-md-9 col-xs-12">
+					<input type="text" name="keyword" id="keyword" class="form-control">
+					<span class="help-block" style="display: none">Please correct the error</span>
+				</div>
+			</div>
+		
+			<div class="form-group row">
+				<div class="col-md-3">Category</div>
+				<div class="col-md-7 col-xs-12"><select name="category" id="category" class="form-control"></select></div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-md-3">Distance(miles)</div>
+				<div class="col-md-7 col-xs-12"><input type="numeric" name="distance" id="distance" placeholder="10" class="form-control"></div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-md-3">From</div>
+					<div class="col-md-8 col-xs-12"><input type="radio" name="location" id="locationC" checked="checked">Current location<br>
+					<input type="radio" name="location" id="locationS">Other. Please Specify:<br>
+					<div id="locationField" class="col-md-9 col-xs-12">
+						<input type="text" name="locationBox" id="locationBox" onFocus="geolocate()" placeholder="Enter a location" disabled="disabled" required="required" class="form-control"><span class="help-block" style="display: none">Please correct the error</span><br>
+					</div>
+				</div>
+			</div>
+			
+			
+			<input type="hidden" name="latitude" id="latitude">
+			<input type="hidden" name="longitute" id="longitute">
+
+			<button type="button" name="search" value="Search" id="search" class="btn btn-primary" disabled="disabled"><span class="glyphicon glyphicon-search"></span>&nbsp;Search</button>
+
+			<button name="clear" id="clear" class="btn btn-default">Clear</button>
+		</div>
+	</div>
+
+	<ul class="nav nav-pills mar">
+	    <li class="active mainPill"><a data-toggle="pill" id="showRes" href="#home">Results</a></li>
+	    <li class="mainPill"><a data-toggle="pill" href="#favs" id="showFav">Favorites</a></li>
+	</ul>
+
+	<div id="detailDiv" style="display: none;">
+		<input type="button" name="detBtn" id="detBtn" value="Details" class="btn btn-default keepRight" disabled="disabled">
+    </div>
+
+	<div class="tab-content" style="clear:both">
+	    <div id="home" class="tab-pane fade in active">
+	      <div id="output" class="table-responsive"></div>
+		  <div id="tableBtn" class="keepCenter">
+		  	<input type="button" name="prev" value="Previous" id="prev" class="btn btn-default" style="display: none;">&nbsp;
+			<input type="button" name="next" value="Next" id="next" class="btn btn-default" style="display: none;">
+		  </div>
+	    </div>
+
+	    <div id="favs" class="tab-pane fade">
+	    	<div class="bord">
+				<div id="favTable" ></div>
+			</div>
+	    </div>
+  	</div>
+	<div id="detailPlace" style="display: none;">
+		<div id="first">
+			<h3 id="namePlace" class="keepCenter display-4">Name of place</h3>
+			<input type="button" class="btn btn-default" name="<list" value="< List" id="list"/>
+			<div class="keepRight">
+				<button id="favDetails" class='btn btn-default favClass'><span class='glyphicon glyphicon-star-empty'></span></button>
+				<a id="twit" href="#"><img src="http://cs-server.usc.edu:45678/hw/hw8/images/Twitter.png" height="35" width="35"></a>
+			</div>
+		</button>
+		</div>
+		<div class="keepRight">
+		<ul class="nav nav-tabs">
+		    <li class="active"><a data-toggle="tab" href="#info">Info</a></li>
+		    <li><a data-toggle="tab" href="#photo">Photos</a></li>
+		    <li><a data-toggle="tab" href="#mapInfo">Map</a></li>
+		    <li><a data-toggle="tab" href="#review">Reviews</a></li>
+		  </ul>
+		</div>
+		  <div class="tab-content bord">
+		    <div id="info" class="tab-pane fade in active">
+		    <br>
+		      <table class='table'>
+		      	<tr id="addr"><th>Address</th><td> </td></tr>
+		      	<tr id="num"><th>Phone Number</th><td> </td></tr>
+		      	<tr id="price"><th>Price Level</th><td> </td></tr>
+		      	<tr id="ratin"><th>Rating</th><td> </td></tr>
+		      	<tr id="goo"><th>Google Page</th><td><a href="" target="_blank">url</a></td></tr>
+		      	<tr id="web"><th>Website</th><td><a href="" target="_blank">website</a></td></tr>
+		      	<tr id="hrs"><th>Hours</th>
+		      		<td id="hrsTime"></td>
+		      		<td><a href="javascript:$('dialogDiv').dialog('open'); return false;"></a></td>
+		      	</tr>
+		      </table>
+		    </div>
+		    <div id="photo" class="tab-pane fade">
+		    	<br>
+		    	<div class="row">
+		    		<div class="column col-xs-12" id="column0"></div>
+		    		<div class="column col-xs-12" id="column1"></div>
+		    		<div class="column col-xs-12" id="column2"></div>
+		    		<div class="column col-xs-12" id="column3"></div>
+		    	</div>
+		    </div>
+		    <div id="mapInfo" class="tab-pane fade">
+		    	<br>
+		    	
+	            <div class="row">
+
+            		<div class="col-md-3 col-xs-12">
+            			<div class="col-md-12">From</div>
+            			<input type='text' id='start' name='Starting point' onFocus="geolocate()" class="form-control">
+            		</div>
+
+
+            		<div class="col-md-3 col-xs-12">
+            			<div class="col-md-12">To</div>
+            			<input type='text' id='end' name='Ending point' class="form-control">
+            		</div>
+
+            		<div class="col-md-3 col-xs-12">
+            			<div class="col-md-12">Travel Mode</div>
+            			<select id='mode' class="form-control">
+				            <option value='DRIVING'>Driving</option>
+				            <option value='BICYCLING'>Bicycling</option>
+				            <option value='TRANSIT'>Transit</option>
+				            <option value='WALKING'>Walking</option>
+				        </select>
+            		</div>
+
+            		
+			        <div class="col-md-3">
+			        	<div>
+			        		<input type='button' name='Directions' value='Get Directions' id="directionBtn" disabled="disabled" class="btn btn-primary"><br>
+			        	</div>
+			            
+			        </div>
+			     </div>
+
+			    <div class="row">
+		        	<button class="btn btn-link" id="viewBtn"><img src='http://cs-server.usc.edu:45678/hw/hw8/images/Pegman.png' id="toggle" height='30' width='30'></button>
+	        	</div>
+	            <div id='map'></div>
+	            <div id='pano' style="display: none;"></div>
+	            <div id='right-panel'></div>
+		    </div>
+		    <div id="review" class="tab-pane fade">
+		    	<br>
+		    	<div class="mar">
+			    	<select id="applicat" name="applicat" class="darkIt"></select>
+			    	<select id="ord" name="ord" class="darkIt"></select>
+			    </div>
+		    	<div id="rev"></div>
+		    </div>
+		  </div>
+	</div>
+	<div id="serv" style="display: none;"></div>
+	<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Open hours</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+		
+ 
+</body>
+</html>
