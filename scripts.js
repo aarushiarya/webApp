@@ -1,4 +1,4 @@
-apiKey = "AIzaSyBsqqvSXgfdba5wWPx2YGTJvyWg4UUUsCM";
+apiKey = "enter_your_API_KEY";
 //var url = "http://localhost:3000";
 var url = "http://webhw81-env.us-east-2.elasticbeanstalk.com";
 
